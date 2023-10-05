@@ -80,12 +80,22 @@ bool check()
     return false;
 }
 
+bool isFull()
+{
+    for (size_t i = 0; i < 9; i++)
+    {
+        if (field[i] == None)
+            return false;
+    }
+    return true;
+    
+}
 int main(int, char**)
 {
     setlocale(LC_ALL, "ru_RU.UTF-8\0");
-    long seed;
+    time_t seed;
     time((time_t * const)&seed);
-    srand(seed);
+    srand((long)seed);
     std::cout
         << "Seed: "
         << seed
@@ -96,7 +106,7 @@ int main(int, char**)
     int pos = -1;
     Cell cur = rand() % 2 == 0 ? Cross : Circle;
 
-    while (!check())
+    while (!check() && !isFull())
     {
         printField();
         std::cout
@@ -118,6 +128,12 @@ int main(int, char**)
     cur = cur == Cross ? Circle : Cross;
     
     printField();
+    if (isFull())
+    {
+        std::cout << "Ничья\n";
+        return 0;
+    }
+
     std::cout
         << "Выиграл игрок: "
         <<(
